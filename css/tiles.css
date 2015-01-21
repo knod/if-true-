@@ -1,4 +1,59 @@
 /* Created 01/21/15
 
+Resources:
+vertically centering text: http://stackoverflow.com/questions/9249359/is-it-possible-to-vertically-align-text-within-a-div
 */
 
+body {
+	background-color: antiquewhite;
+	text-align: center;
+	font-size: 20px;
+}
+
+.tile {
+	position: absolute;
+	width: 5rem;
+	height: 5rem;
+}
+
+.bool {
+	position: absolute;
+	left: 0.5rem; top: 0.5rem;
+	width: 4rem; height: 4rem;
+	line-height: 3.8rem;  /* for vertical centering of text */
+	border-radius: 0.4rem;
+}
+
+.true {
+	background-color: palegreen;
+}
+
+.false {
+	background-color: tomato;
+}
+
+.node {
+	position: absolute;
+	font-size: 10px;
+	width: 1rem; height: 1rem;
+	line-height: 1rem;
+	font-weight: bolder;
+	background-color: burlywood;
+	border-radius: 0.2rem;
+}
+
+.node-left {
+	left: 0; top: 2rem;
+}
+
+.node-right {
+	left: 4rem; top: 2rem;
+}
+
+.node-top {
+	left: 2rem; top: 0;
+}
+
+.node-bottom {
+	left: 2rem; top: 4rem;
+}
