@@ -2,6 +2,9 @@
 
 Resources:
 vertically centering text: http://stackoverflow.com/questions/9249359/is-it-possible-to-vertically-align-text-within-a-div
+
+TODO:
+- Figure out why the cells are overlapping the grid's bottom border
 */
 
 html {
@@ -12,8 +15,9 @@ html {
 
 body {
 	background-color: antiquewhite;
-	text-align: center;
 }
+
+body, table { text-align: center; }
 
 .grid-container {
 	/* for tile position absolute */
@@ -30,17 +34,21 @@ body {
 
 .grid td {
 	margin: 0; padding: 0;
-	width: 3.9rem; /* same as .bool */
-	height: 3.9rem; /* same as .bool */
+	width: 4rem; /* same as .bool */
+	height: 4rem; /* same as .bool */
 	border: 0;
-	/* Same as grid container */
-	border: .1rem solid rgb(128, 70, 0);
+}
+
+.border-cell {
+	box-sizing: border-box;
+	/* Same color as grid container */
+	border: 0.2rem solid rgb(128, 70, 0);
 }
 
 .tile {
 	position: absolute;
-	width: 5rem;
-	height: 5rem;
+	width: 4rem;
+	height: 4rem;
 	left: 0rem;
 	top: 0rem;
 }
@@ -52,20 +60,23 @@ body {
 	line-height: 3.8rem;  /* for vertical centering of text */
 	/*border-radius: 0.4rem;*/ /* Doesn't match the inside of the grid */
 	font-size: 1.2rem;
-	border: 0.2rem solid black;
+	background-color: lightblue;
+	/*border: 0.2rem solid powderblue;*/
+	border: 0.2rem solid rgb(128, 70, 0);
 }
 
-.true {
-	background-color: palegreen;
-	border-color: lightgreen;
+.truthy {
+	/*background-color: palegreen;*/
+	/*border-color: lightgreen;*/
 }
 
-.false {
-	background-color: tomato;
-	border-color: brown;
+.falsy {
+	/*background-color: tomato;*/
+	/*border-color: brown;*/
 }
 
 /* Tile id's temporary for testing */
+/* Actually, these could give positions? */
 #tile_1 {
 	left: 0rem; top: 0rem;
 }

@@ -3,3 +3,5 @@
 */
 
 'use strict'
+
+var idCount = 0;
