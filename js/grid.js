@@ -10,6 +10,7 @@ var Grid = function () {
 
 	var thisGrid = {};
 
+	thisGrid.container = null;
 	thisGrid.id = null;
 	thisGrid.numCells = 4;
 	thisGrid.html = null;
@@ -78,7 +79,7 @@ var Grid = function () {
 
 	// Gives a list containing objects containing the indexes for
 	// empty cells
-	thisGrid.avilableCells = function ( position ) {
+	thisGrid.availableCells = function () {
 
 		var emptyCellIndexes = [];
 
@@ -95,35 +96,49 @@ var Grid = function () {
 
 	};  // end Grid.availableCells()
 
-	thisGrid.initGrid = function ( idNum ) {
+	thisGrid.initGrid = function ( container, idNum ) {
 
 		//this.id = idNum;
 		this.cells = this.buildEmptyGridData();
-		// Needs id number
+		this.idNum = idNum;
 		this.html = this.buildHTML();
+		this.container = container;
+		this.emptyCellsXY = this.availableCells();
 
 		// Add three tiles to start us off
+		TileManager.addRandomTile( container, this );
+		TileManager.addRandomTile( container, this );
+		TileManager.addRandomTile( container, this );
+		TileManager.addRandomTile( container, this );
+		TileManager.addRandomTile( container, this );
+		TileManager.addRandomTile( container, this );
 
-
-		return this.cells;
+		return this;
 	};
 
 	return thisGrid;
 };  // end Grid()
 
 
-// Test of filling cells
+// // Test of filling cells
+// var count = 1;
+// var x = Grid();
+// x.initGrid();
+// var container = document.getElementsByClassName( 'grid-container' )[0];
+// container.appendChild( x.html );
+
+// for ( var colNum = 0; colNum < x.numCells; colNum++ ) {
+// 	for ( var rowNum = 0; rowNum < x.numCells; rowNum++ ) {
+// 		//emptyCellXY, idNum, booly
+// 		TileManager.addTile( container, {x: colNum, y: rowNum}, '[]' );
+
+// 	}
+// }
+
+// Test if initiating grid
+var container = document.getElementsByClassName( 'grid-container' )[0];
 var count = 1;
 var x = Grid();
-x.initGrid();
-var container = document.getElementsByClassName( 'grid-container' )[0];
+x.initGrid( container, 0 );
 container.appendChild( x.html );
-
-for ( var colNum = 0; colNum < x.numCells; colNum++ ) {
-	for ( var rowNum = 0; rowNum < x.numCells; rowNum++ ) {
-		//emptyCellXY, idNum, booly
-		TileManager.addTile( container, {x: colNum, y: rowNum}, count, '[]' );
-
-	}
-}
 

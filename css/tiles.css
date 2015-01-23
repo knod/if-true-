@@ -10,7 +10,6 @@ TODO:
 html {
 	/* font size in html will affect rem */
 	font-size: 1rem;
-	margin: 0; padding: 0;
 }
 
 body {
@@ -19,10 +18,13 @@ body {
 
 body, table { text-align: center; }
 
+table { line-height: 0px; }
+
 .grid-container {
 	/* for tile position absolute */
 	position: relative;
 	display: inline-block;
+	margin: 0; padding: 0;
 	border: 0.7rem solid rgb(128, 70, 0);
 	border-radius: 0.4rem;
 }
@@ -33,7 +35,8 @@ body, table { text-align: center; }
 }
 
 .grid td {
-	margin: 0; padding: 0;
+	margin: 0;
+	padding: 0;
 	width: 4rem; /* same as .bool */
 	height: 4rem; /* same as .bool */
 	border: 0;
@@ -43,6 +46,8 @@ body, table { text-align: center; }
 	box-sizing: border-box;
 	/* Same color as grid container */
 	border: 0.2rem solid rgb(128, 70, 0);
+	width: 100%;
+	height: 100%;
 }
 
 .tile {

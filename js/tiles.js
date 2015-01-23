@@ -154,6 +154,8 @@ var Tile = function ( boolString ) {
 // ================
 var TileManager = {};
 
+TileManager.idCount = 0;
+
 TileManager.falsyStrings = [
 	'false', 'null', 'undefined', '0',
 	'""', "NaN"
@@ -201,17 +203,18 @@ TileManager.addTile = function ( container, emptyCellXY, idNum, booly ) {
 
 };
 
-// ( obj, int ) -> Tile
+// ( htmlObj, Grid, int ) -> Tile
 // Add a random tile to the board
-TileManager.addRandomTile = function ( container, grid, idNum ) {
+TileManager.addRandomTile = function ( container, grid ) {
 
 	var self = this;
-
+	// console.log(grid.emptyCellsXY);
 	// Pick a random empty location
 	var emptyCellXY = chooseRandom( grid.emptyCellsXY );
 	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
 
-	var tile = self.addTile( container, emptyCellXY, idNum, booly );
+	var tile = self.addTile( container, emptyCellXY, TileManager.idCount, booly );
+	TileManager.idCount++
 
 	return tile;
 
