@@ -10,12 +10,12 @@ var Grid = function () {
 
 	var thisGrid = {};
 
-	thisGrid.container = null;
-	thisGrid.id = null;
-	thisGrid.numCells = 4;
-	thisGrid.html = null;
+	thisGrid.container        = null;
+	thisGrid.id               = null;
+	thisGrid.numCells         = 4;
+	thisGrid.html             = null;
 	// List of nulls and Tile objects
-	thisGrid.cells = [];
+	thisGrid.cells            = [];
 	// List of x, y values of empty cells
 	thisGrid.emptyCellsColRow = [];
 
@@ -98,7 +98,7 @@ var Grid = function () {
 	thisGrid.addTile = function ( container ) {
 		var self = this;
 
-		var tile = TileManager.addRandomTile( container, self );
+		var tile = TileManager.addRandomTile( self );
 		self.cells[tile.cell.col][tile.cell.row] = tile;
 		self.emptyCellsColRow = self.getEmptyCells();
 

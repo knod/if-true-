@@ -9,8 +9,8 @@ http://gabrielecirulli.github.io/2048/
 // Returns a random item from the given list
 var chooseRandom = function ( choiceList ) {
 
-	var chance = 1/choiceList.length;
-	var random = Math.random();
+	var chance     = 1/choiceList.length;
+	var random     = Math.random();
 	var choiceIndx = Math.ceil(random/chance) - 1;
 
 	return choiceList[ choiceIndx ];
@@ -45,20 +45,21 @@ var Tile = function ( boolString ) {
 
 	var thisTile = {};
 
-	thisTile.html = null,
-	thisTile.boolString = null,
-	thisTile.value = null,
-	thisTile.bool = null,
-	thisTile.nodeL = {},
-	thisTile.nodeR = {},
-	thisTile.nodeT = {},
-	thisTile.nodeB = {},
-	thisTile.cell = {},
+	thisTile.html         = null,
+	thisTile.boolString   = null,
+	thisTile.value        = null,
+	thisTile.bool         = null,
+	thisTile.nodeL        = {},
+	thisTile.nodeR        = {},
+	thisTile.nodeT        = {},
+	thisTile.nodeB        = {},
+	thisTile.cell         = {},
 	thisTile.previousCell = {},
-	thisTile.id = null
+	thisTile.id           = null
 
 	// Updates position values. Should it also
 	// move the tile there if it needs moving?
+	// ( {col, row} ) -> Tile
 	thisTile.updatePosition = function ( cellColRow ) {
 		var self = this;
 
@@ -70,7 +71,7 @@ var Tile = function ( boolString ) {
 		var yStr = numToRem( remPos.y );
 
 		self.html.style.left = xStr;
-		self.html.style.top = yStr;
+		self.html.style.top  = yStr;
 
 		return self;
 
@@ -79,11 +80,12 @@ var Tile = function ( boolString ) {
 	// Sets the object id and the html id
 	thisTile.setID = function ( idNum ) {
 		var self = this;
+
 		self.id = idNum;
 		self.html.id = "id_" + idNum;
 
 		return self;
-	};
+	};  // end Tile.setID()
 
 
 	// PRIVATE FUNCTIONS
@@ -187,16 +189,19 @@ TileManager.randomBoolStr = function ( truthys, falsys ) {
 
 
 // Needed?
-// {}, int, str -> Tile
-TileManager.addTile = function ( container, emptyCellColRow, idNum, booly ) {
+// ( domObj, {}, str ) -> Tile
+TileManager.addTile = function ( container, cellColRow, booly ) {
+	var self = this;
 
 	// create a tile object
 	var tile = Tile( booly );
-	tile.setID( idNum );
+	tile.setID( self.idCount );
+	self.idCount++
 
 	// Convert grid value to empty
-	// Give a starting emptyCellColRow
-	tile.updatePosition( emptyCellColRow );
+	// Give a starting cellColRow
+	tile.updatePosition( cellColRow );
+	self.tileList.push( tile );
 
 	// Add to the DOM (belongs here?)
 	container.appendChild( tile.html );
@@ -205,9 +210,9 @@ TileManager.addTile = function ( container, emptyCellColRow, idNum, booly ) {
 
 };
 
-// ( htmlObj, Grid, int ) -> Tile
+// ( Grid ) -> Tile
 // Add a random tile to the board
-TileManager.addRandomTile = function ( container, grid ) {
+TileManager.addRandomTile = function ( grid ) {
 
 	var self = this;
 
@@ -215,10 +220,19 @@ TileManager.addRandomTile = function ( container, grid ) {
 	var emptyCellColRow = chooseRandom( grid.emptyCellsColRow );
 	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
 
-	var tile = self.addTile( container, emptyCellColRow, TileManager.idCount, booly );
-	TileManager.idCount++
+	var tile = self.addTile( grid.container, emptyCellColRow, booly );
 
 	return tile;
 
 };  // end TileManager.addRandomTile()
 
+
+TileManager.addTrueTile = function ( grid, cellColRow ) {
+	var self = this;
+
+	var booly = 'true';
+	var tile = self.addTile( grid.container, cellColRow, booly );
+
+	return tile;
+
+};  // end TileManager.addTrueTile()
