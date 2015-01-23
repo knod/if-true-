@@ -26,10 +26,10 @@ var determineBooly = function ( boolString ) {
 };  // end determineBooly()
 
 // {} -> {}
-var cellCoordsToRemNum = function ( cellCoords ) {
+var cellCoordsToRemNum = function ( cellColRow ) {
 	// The mutiplyer is equal to the rem width of the tile element
-	var xRemNum = cellCoords.x * 4;
-	var yRemNum = cellCoords.y * 4;
+	var xRemNum = cellColRow.col * 4;
+	var yRemNum = cellColRow.row * 4;
 	return { x: xRemNum, y: yRemNum };
 };  // end cellCoordsToRemNum()
 
@@ -53,18 +53,18 @@ var Tile = function ( boolString ) {
 	thisTile.nodeR = {},
 	thisTile.nodeT = {},
 	thisTile.nodeB = {},
-	thisTile.position = {},
-	thisTile.previousPosition = {},
+	thisTile.cell = {},
+	thisTile.previousCell = {},
 	thisTile.id = null
 
 	// Updates position values. Should it also
 	// move the tile there if it needs moving?
-	thisTile.updatePosition = function ( position ) {
+	thisTile.updatePosition = function ( cellColRow ) {
 
-		var remPos = cellCoordsToRemNum( position );
-		this.x = remPos.x;
-		this.y = remPos.y;
+		this.cell.row = cellColRow.row;
+		this.cell.col = cellColRow.col;
 
+		var remPos = cellCoordsToRemNum( cellColRow );
 		var xStr = numToRem( remPos.x );
 		var yStr = numToRem( remPos.y );
 
@@ -186,15 +186,15 @@ TileManager.randomBoolStr = function ( truthys, falsys ) {
 
 // Needed?
 // {}, int, str -> Tile
-TileManager.addTile = function ( container, emptyCellXY, idNum, booly ) {
+TileManager.addTile = function ( container, emptyCellColRow, idNum, booly ) {
 
 	// create a tile object
 	var tile = Tile( booly );
 	tile.setID( idNum );
 
 	// Convert grid value to empty
-	// Give a starting emptyCellXY
-	tile.updatePosition( emptyCellXY );
+	// Give a starting emptyCellColRow
+	tile.updatePosition( emptyCellColRow );
 
 	// Add to the DOM (belongs here?)
 	container.appendChild( tile.html );
@@ -208,12 +208,12 @@ TileManager.addTile = function ( container, emptyCellXY, idNum, booly ) {
 TileManager.addRandomTile = function ( container, grid ) {
 
 	var self = this;
-	// console.log(grid.emptyCellsXY);
+
 	// Pick a random empty location
-	var emptyCellXY = chooseRandom( grid.emptyCellsXY );
+	var emptyCellColRow = chooseRandom( grid.emptyCellsColRow );
 	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
 
-	var tile = self.addTile( container, emptyCellXY, TileManager.idCount, booly );
+	var tile = self.addTile( container, emptyCellColRow, TileManager.idCount, booly );
 	TileManager.idCount++
 
 	return tile;

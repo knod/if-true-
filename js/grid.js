@@ -17,7 +17,7 @@ var Grid = function () {
 	// List of nulls and Tile objects
 	thisGrid.cells = [];
 	// List of x, y values of empty cells
-	thisGrid.emptyCellsXY = [];
+	thisGrid.emptyCellsColRow = [];
 
 	// Perhaps build this dynamically in future
 	thisGrid.positions = [
@@ -29,13 +29,14 @@ var Grid = function () {
 
 	// (int) -> []
 	thisGrid.buildEmptyGridData = function () {
+		var self = this;
 		var cells = [];
 
-		for (var colNum = 0; colNum < this.numCells; colNum++) {
+		for (var colNum = 0; colNum < self.numCells; colNum++) {
 
 			cells[ colNum ] = [];
 			var column = cells[ colNum ];
-			for (var rownNum = 0; rownNum < this.numCells; rownNum++) {
+			for (var rownNum = 0; rownNum < self.numCells; rownNum++) {
 				column.push(null);
 			}
 		}
@@ -45,82 +46,90 @@ var Grid = function () {
 
 	// (int) -> str
 	thisGrid.buildHTML = function ( container, idNum ) {
+		var self = this;
 
-		// var gridHTML = document.createElement( 'table' );
-		// gridHTML.className = 'grid';
-		// gridHTML.id = 'id-' + idNum;
-
-		for (var colNum = 0; colNum < this.numCells; colNum++) {
-			
-			// var col = document.createElement( 'tr' );
-			for (var rownNum = 0; rownNum < this.numCells; rownNum++) {
-				// var cell = document.createElement( 'td' );
+		for (var colNum = 0; colNum < self.numCells; colNum++) {
+			for (var rownNum = 0; rownNum < self.numCells; rownNum++) {
 				
-				// For borders for the cells
-				// box-sizing doesn't work for table cells
 				var borderCell = document.createElement( 'div' );
 				borderCell.className = 'grid-cell';
 				container.appendChild( borderCell );
-				// cell.appendChild( borderCell );
 
-				// col.appendChild( cell );
 			}
-			// gridHTML.appendChild( col );
 		}
 
 		return container
-	};
+	};  // end Grid.buildHTML()
 
-
+	// {} -> bool
 	thisGrid.isCellOccupied = function ( position ) {
+
 		if ( position.x === tileObj.x && position.y === tileObj.y ) {
 			return true;
 		} else { return false; }
+
 	};  // end Grid.isCellOccupied()
+
 
 	// Gives a list containing objects containing the indexes for
 	// empty cells
-	thisGrid.availableCells = function () {
+	// (none) -> [ {} ]
+	thisGrid.getEmptyCells = function () {
+		var self = this;
 
-		var emptyCellIndexes = [];
+		var emptyCellsColRow = [];
 
-		for ( var colNum = 0; colNum < this.numCells; colNum++ ) {
-			for ( var rowNum = 0; rowNum < this.numCells; rowNum++ ) {
-				var occupant = this.cells[colNum][rowNum];
+		for ( var colNum = 0; colNum < self.numCells; colNum++ ) {
+			for ( var rowNum = 0; rowNum < self.numCells; rowNum++ ) {
+				
+				var occupant = self.cells[colNum][rowNum];
 				if ( occupant === null ) {
-					emptyCellIndexes.push( {col: colNum, row: rowNum} );
+
+					emptyCellsColRow.push( {col: colNum, row: rowNum} );
+
 				}
 			}
 		}
 
-		return emptyCellIndexes;
+		return emptyCellsColRow;
 
-	};  // end Grid.availableCells()
+	};  // end Grid.getEmptyCells()
+
+	thisGrid.addTile = function ( container ) {
+		var self = this;
+
+		var tile = TileManager.addRandomTile( container, self );
+		self.cells[tile.cell.col][tile.cell.row] = tile;
+		self.emptyCellsColRow = self.getEmptyCells();
+
+		return tile;
+
+	};  // end Grid.addTile()
 
 	thisGrid.initGrid = function ( idNum ) {
+		var self = this;
 
-		this.container = document.createElement( 'div' );
-		this.container.className = 'grid-container';
+		self.container = document.createElement( 'div' );
+		self.container.className = 'grid-container';
 
-		var container = this.container;
+		var container = self.container;
 
-		//this.id = idNum;
-		this.cells = this.buildEmptyGridData();
-		this.idNum = idNum;
-		this.html = this.buildHTML( container, idNum );
-		this.emptyCellsXY = this.availableCells();
+		//self.id = idNum;
+		self.cells = self.buildEmptyGridData();
+		self.idNum = idNum;
+		self.html = self.buildHTML( container, idNum );
+		// Start with a list of all the empty cells;
+		self.emptyCellsColRow = self.getEmptyCells();
 
 		// Add three tiles to start us off
-		TileManager.addRandomTile( container, this );
-		TileManager.addRandomTile( container, this );
-		TileManager.addRandomTile( container, this );
-		TileManager.addRandomTile( container, this );
-		TileManager.addRandomTile( container, this );
-		TileManager.addRandomTile( container, this );
+		var numStartTiles = 3;
+		for ( var tileNum = 1; tileNum < (numStartTiles + 1); tileNum++ ) {
+			self.addTile( container );
+		}
 
-		document.body.appendChild( this.container );
+		document.body.appendChild( self.container );
 
-		return this;
+		return self;
 	};
 
 	return thisGrid;
@@ -136,7 +145,6 @@ var Grid = function () {
 
 // for ( var colNum = 0; colNum < x.numCells; colNum++ ) {
 // 	for ( var rowNum = 0; rowNum < x.numCells; rowNum++ ) {
-// 		//emptyCellXY, idNum, booly
 // 		TileManager.addTile( container, {x: colNum, y: rowNum}, '[]' );
 
 // 	}
