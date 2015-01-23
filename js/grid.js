@@ -44,30 +44,31 @@ var Grid = function () {
 	};  // end Grid.buildEmptyGrid()
 
 	// (int) -> str
-	thisGrid.buildHTML = function ( idNum ) {
+	thisGrid.buildHTML = function ( container, idNum ) {
 
-		var gridHTML = document.createElement( 'table' );
-		gridHTML.className = 'grid';
+		// var gridHTML = document.createElement( 'table' );
+		// gridHTML.className = 'grid';
 		// gridHTML.id = 'id-' + idNum;
 
 		for (var colNum = 0; colNum < this.numCells; colNum++) {
 			
-			var col = document.createElement( 'tr' );
+			// var col = document.createElement( 'tr' );
 			for (var rownNum = 0; rownNum < this.numCells; rownNum++) {
-				var cell = document.createElement( 'td' );
+				// var cell = document.createElement( 'td' );
 				
 				// For borders for the cells
 				// box-sizing doesn't work for table cells
 				var borderCell = document.createElement( 'div' );
-				borderCell.className = 'border-cell';
-				cell.appendChild( borderCell );
+				borderCell.className = 'grid-cell';
+				container.appendChild( borderCell );
+				// cell.appendChild( borderCell );
 
-				col.appendChild( cell );
+				// col.appendChild( cell );
 			}
-			gridHTML.appendChild( col );
+			// gridHTML.appendChild( col );
 		}
 
-		return gridHTML
+		return container
 	};
 
 
@@ -96,13 +97,17 @@ var Grid = function () {
 
 	};  // end Grid.availableCells()
 
-	thisGrid.initGrid = function ( container, idNum ) {
+	thisGrid.initGrid = function ( idNum ) {
+
+		this.container = document.createElement( 'div' );
+		this.container.className = 'grid-container';
+
+		var container = this.container;
 
 		//this.id = idNum;
 		this.cells = this.buildEmptyGridData();
 		this.idNum = idNum;
-		this.html = this.buildHTML();
-		this.container = container;
+		this.html = this.buildHTML( container, idNum );
 		this.emptyCellsXY = this.availableCells();
 
 		// Add three tiles to start us off
@@ -112,6 +117,8 @@ var Grid = function () {
 		TileManager.addRandomTile( container, this );
 		TileManager.addRandomTile( container, this );
 		TileManager.addRandomTile( container, this );
+
+		document.body.appendChild( this.container );
 
 		return this;
 	};
@@ -136,9 +143,9 @@ var Grid = function () {
 // }
 
 // Test if initiating grid
-var container = document.getElementsByClassName( 'grid-container' )[0];
+// var container = document.getElementsByClassName( 'grid-container' )[0];
 var count = 1;
 var x = Grid();
-x.initGrid( container, 0 );
-container.appendChild( x.html );
+x.initGrid( 0 );
+// container.appendChild( x.html );
 

@@ -23,31 +23,20 @@ table { line-height: 0px; }
 .grid-container {
 	/* for tile position absolute */
 	position: relative;
-	display: inline-block;
-	margin: 0; padding: 0;
+	display: block;
+	margin: 0 auto; padding: 0;
+	width: 16rem;
 	border: 0.7rem solid rgb(128, 70, 0);
 	border-radius: 0.4rem;
 }
 
-.grid {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-.grid td {
-	margin: 0;
-	padding: 0;
-	width: 4rem; /* same as .bool */
-	height: 4rem; /* same as .bool */
-	border: 0;
-}
-
-.border-cell {
+.grid-cell {
+	display: inline-block;
+	width: 4rem;
+	height: 4rem;
 	box-sizing: border-box;
 	/* Same color as grid container */
 	border: 0.2rem solid rgb(128, 70, 0);
-	width: 100%;
-	height: 100%;
 }
 
 .tile {
