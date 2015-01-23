@@ -60,27 +60,29 @@ var Tile = function ( boolString ) {
 	// Updates position values. Should it also
 	// move the tile there if it needs moving?
 	thisTile.updatePosition = function ( cellColRow ) {
+		var self = this;
 
-		this.cell.row = cellColRow.row;
-		this.cell.col = cellColRow.col;
+		self.cell.row = cellColRow.row;
+		self.cell.col = cellColRow.col;
 
 		var remPos = cellCoordsToRemNum( cellColRow );
 		var xStr = numToRem( remPos.x );
 		var yStr = numToRem( remPos.y );
 
-		this.html.style.left = xStr;
-		this.html.style.top = yStr;
+		self.html.style.left = xStr;
+		self.html.style.top = yStr;
 
-		return this;
+		return self;
 
 	};  // end Tile.updatePosition()
 
 	// Sets the object id and the html id
 	thisTile.setID = function ( idNum ) {
-		this.id = idNum;
-		this.html.id = "id_" + idNum;
+		var self = this;
+		self.id = idNum;
+		self.html.id = "id_" + idNum;
 
-		return this;
+		return self;
 	};
 
 

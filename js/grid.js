@@ -19,13 +19,13 @@ var Grid = function () {
 	// List of x, y values of empty cells
 	thisGrid.emptyCellsColRow = [];
 
-	// Perhaps build this dynamically in future
-	thisGrid.positions = [
-		{ x:0, y:0}, { x:0, y:4}, { x:0, y:8}, { x:0, y:12},
-		{ x:4, y:0}, { x:4, y:4}, { x:4, y:8}, { x:4, y:12},
-		{ x:8, y:0}, { x:8, y:4}, { x:8, y:8}, { x:8, y:12},
-		{ x:12, y:0}, { x:12, y:4}, { x:12, y:8}, { x:12, y:12}
-	];  // end Grid.positions;
+	// // Perhaps build this dynamically in future
+	// thisGrid.positions = [
+	// 	{ x:0, y:0}, { x:0, y:4}, { x:0, y:8}, { x:0, y:12},
+	// 	{ x:4, y:0}, { x:4, y:4}, { x:4, y:8}, { x:4, y:12},
+	// 	{ x:8, y:0}, { x:8, y:4}, { x:8, y:8}, { x:8, y:12},
+	// 	{ x:12, y:0}, { x:12, y:4}, { x:12, y:8}, { x:12, y:12}
+	// ];  // end Grid.positions[];
 
 	// (int) -> []
 	thisGrid.buildEmptyGridData = function () {
@@ -134,26 +134,4 @@ var Grid = function () {
 
 	return thisGrid;
 };  // end Grid()
-
-
-// // Test of filling cells
-// var count = 1;
-// var x = Grid();
-// x.initGrid();
-// var container = document.getElementsByClassName( 'grid-container' )[0];
-// container.appendChild( x.html );
-
-// for ( var colNum = 0; colNum < x.numCells; colNum++ ) {
-// 	for ( var rowNum = 0; rowNum < x.numCells; rowNum++ ) {
-// 		TileManager.addTile( container, {x: colNum, y: rowNum}, '[]' );
-
-// 	}
-// }
-
-// Test if initiating grid
-// var container = document.getElementsByClassName( 'grid-container' )[0];
-var count = 1;
-var x = Grid();
-x.initGrid( 0 );
-// container.appendChild( x.html );
 
