@@ -1,0 +1,27 @@
+Plan
+
+Most current: https://www.mindmup.com/#m:a189193e0086210132ab3842af6a248292
+
+Less current:
+			Main
+			  | \
+			  v  \
+			  |	 Input
+			  |   /
+			  v  /
+		Game Manager
+			/ | \
+		   /  |  \
+Page Manager  |	 Grid
+	|		  |	   |
+	v		  |	   v
+   DOM		  |	  DOM (just once at the start)
+   			  |
+   			  v
+   		Tile Manager
+   			  |
+   			  v
+   			Tile
+   			  |
+   			  v
+   			 DOM

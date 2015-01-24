@@ -45,7 +45,7 @@ var numToRem = function ( num ) { return num.toString() + "rem"; };
 var addRandomTile = function ( grid ) {
 
 	var emptyCellPos = chooseRandom( grid.getEmptyCells() );
-	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
+	var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
 	var tile = Tile( booly, emptyCellPos );
 
 	tile._setID( tileIDCount );

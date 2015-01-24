@@ -141,23 +141,23 @@ var Tile = function ( boolString, cellPos ) {
 // ================
 var TileManager = {};
 
-TileManager.idCount = 0;
+TileManager._idCount = 0;
 
-TileManager.falsyStrings = [
+TileManager._falsyStrings = [
 	'false', 'null', 'undefined', '0',
 	'""', "NaN"
 ];
 
-TileManager.truthyStrings = [
+TileManager._truthyStrings = [
 	'true', '1', '2', '16', '[]', '{}',
 	'"false"', '"NaN"', '"null"', '"0"'
 ];
 
 // Should this be here in TileManager? I think not...
-TileManager.tileList = [];
+// TileManager._tileList = [];
 
 // ( [str], [str] ) -> str
-TileManager.randomBoolStr = function ( truthys, falsys ) {
+TileManager._randomBoolStr = function ( truthys, falsys ) {
 
 	var boolStr;
 	var whichBool = chooseRandom( [false, true] );
@@ -168,60 +168,60 @@ TileManager.randomBoolStr = function ( truthys, falsys ) {
 		return chooseRandom( falsys );
 	}
 
-};  // end TileManager.randomBoolStr()
+};  // end TileManager._randomBoolStr()
 
 
 // Needed?
 // ( domObj, {}, str ) -> Tile
-TileManager.addTile = function ( container, cellColRow, booly ) {
+TileManager._addTile = function ( booly, cellPos, grid ) {
 	var self = this;
 
 	// create a tile object
-	var tile = Tile( booly );
-	tile.setID( self._idCount );
-	self._idCount++
+	var tile = Tile( booly, cellPos );
+	// tile.setID( self._idCount );
+	// self._idCount++
 
-	// Convert grid value to empty
-	// Give a starting cellColRow
-	tile.updatePosition( cellColRow );
-	self._tileList.push( tile );
+	// // Convert grid value to empty
+	// // Give a starting cellPos
+	// tile.updatePosition( cellPos );
+	// self._tileList.push( tile );
 
 	// Add to the DOM (belongs here?)
-	container.appendChild( tile.html );
+	grid.container.appendChild( tile.html );
 
 	return tile;
 
 };
 
-// ( Grid ) -> Tile
-// Add a random tile to the board
-TileManager.addRandomTile = function ( grid ) {
+// // ( Grid ) -> Tile
+// // Add a random tile to the board
+// TileManager._addRandomTile = function ( grid ) {
 
-	var self = this;
+// 	var self = this;
 
-	// Pick a random empty location
-	var emptyCellColRow = chooseRandom( grid.getEmptyCells() );
-	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
+// 	// Pick a random empty location
+// 	var emptyCellColRow = chooseRandom( grid.getEmptyCells() );
+// 	var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
 
-	var tile = self._addTile( grid.container, emptyCellColRow, booly );
+// 	var tile = self._addTile( grid.container, emptyCellColRow, booly );
 
-	return tile;
+// 	return tile;
 
-};  // end TileManager.addRandomTile()
+// };  // end TileManager._addRandomTile()
 
 
-TileManager.addTrueTile = function ( grid, cellColRow ) {
+TileManager._addTrueTile = function ( grid, cellColRow ) {
 	var self = this;
 
 	var booly = 'true';
-	var tile = self._addTile( grid.container, cellColRow, booly );
+	var tile = self._addTile( booly, cellColRow, grid.container  );
 
 	return tile;
 
-};  // end TileManager.addTrueTile()
+};  // end TileManager._addTrueTile()
 
 
-TileManager.moveRight = function ( grid ) {
+TileManager._moveRight = function ( grid ) {
 
 	var cells = grid.cells;
 
@@ -240,10 +240,10 @@ TileManager.moveRight = function ( grid ) {
 
 	// }
 
-};  // end TileManager.moveRight()
+};  // end TileManager._moveRight()
 
 // ( Grid ) -> TileManager
-TileManager.endRound = function ( grid ) {
+TileManager._endRound = function ( grid ) {
 	var self = this;
 
 	// ( Grid, {col, row} ) -> Grid
@@ -258,10 +258,10 @@ TileManager.endRound = function ( grid ) {
 	// Should I return grid instead?
 	return self;
 
-};  // end TileManager.endRound();
+};  // end TileManager._endRound();
 
 // Get the vector representing the chosen direction
-TileManager.getVector = function (direction) {
+TileManager._getVector = function (direction) {
 	// Vectors representing tile movement
 	var map = {
 		"right": { x:  1,  y:  0 },  // Right
@@ -271,11 +271,11 @@ TileManager.getVector = function (direction) {
 	};
 
 	return map[ direction ];
-};  // end TileManager.getVector()
+};  // end TileManager._getVector()
 
 // Build a list of positions to traverse in the right order
 // Determines order of movement/merge checking
-TileManager.buildTraversals = function (vector) {
+TileManager._buildTraversals = function (vector) {
 	var traversals = { x: [], y: [] };
 
 	for ( var pos = 0; pos < this.size; pos++ ) {
@@ -288,5 +288,5 @@ TileManager.buildTraversals = function (vector) {
 	if ( vector.y === 1 ) { traversals.y = traversals.y.reverse(); }
 
 	return traversals;
-};  // end TileManager.buildTraversals()
+};  // end TileManager._buildTraversals()
 

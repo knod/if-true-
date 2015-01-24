@@ -143,17 +143,11 @@ var Grid = function () {
 	// This function seems a little wonky, but I'm not sure why
 	// Maybe tile needs to be passed in?
 	// Maybe it shouldn't change its own property?
+	// Should this return cells or tile?
 	thisGrid.addTile = function ( tile ) {
-		this.cells.push( [tile._cell.col][tile._cell.row] );
-
 		var self = this;
-
-		var tile = TileManager.addRandomTile( self );
-		self.cells[tile._cell.col][tile._cell.row] = tile;
-		self.emptyCellsColRow = self.getEmptyCells();
-
-		return tile;
-
+		self.cells.push( [tile._cell.col][tile._cell.row] );
+		return self;
 	};  // end Grid.addTile()
 
 	// Removes a tile._ Not sure when to remove tiles yet, or
@@ -161,13 +155,8 @@ var Grid = function () {
 	// we'll work on it
 	thisGrid.removeTile = function ( tile ) {
 		var self = this;
-
-		var col = tile._cell.col,
-			row = tile._cell.row;
-
-		self.cells[ col ][ row ] = null;
-
-		return self.cells;
+		self.cells[ tile._cell.col ][ tile._cell.row ] = null;
+		return self;
 	};  // end removeTile
 
 	// Don't worry about the tiles, just do stuff for yourself
