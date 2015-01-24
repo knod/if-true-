@@ -31,11 +31,17 @@ var leftKeys   = [ 'left',  'a' ];
 var upKeys     = [ 'up',    'w' ];
 var downKeys   = [ 'down',  's' ];
 
-var moveRight = function () {
-	console.log("You moved right.");
-};
+// Placeholders
+var moveRight = function () { console.log("You moved right."); };
+var moveLeft = function () { console.log("You moved left."); };
+var moveUp = function () { console.log("You moved up."); };
+var moveDown = function () { console.log("You moved down."); };
+
 
 setEachKey( rightKeys, {}, moveRight );
+setEachKey( leftKeys, {}, moveLeft );
+setEachKey( upKeys, {}, moveUp );
+setEachKey( downKeys, {}, moveDown );
 
 
 // ==================

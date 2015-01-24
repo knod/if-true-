@@ -6,83 +6,58 @@ http://gabrielecirulli.github.io/2048/
 
 'use strict'
 
-// Returns a random item from the given list
-var chooseRandom = function ( choiceList ) {
-
-	var chance     = 1/choiceList.length;
-	var random     = Math.random();
-	var choiceIndx = Math.ceil(random/chance) - 1;
-
-	return choiceList[ choiceIndx ];
-
-};  // end chooseRandom()
-
-// Evaluates the string and returns how it acts as a bool
-var determineBooly = function ( boolString ) {
-
-	if ( eval(boolString) ) { return true; }
-	else { return false; }
-
-};  // end determineBooly()
-
-// {} -> {}
-var cellCoordsToRemNum = function ( cellColRow ) {
-	// The mutiplyer is equal to the rem width of the tile element
-	var xRemNum = cellColRow.col * 4;
-	var yRemNum = cellColRow.row * 4;
-	return { x: xRemNum, y: yRemNum };
-};  // end cellCoordsToRemNum()
-
-var numToRem = function ( num ) { return num.toString() + "rem"; };
-
-
 // ==============
 // TILE OBJECT
 // ==============
-var Tile = function ( boolString ) {
+// Somehow need to integrate cellPos into creation of tile
+var Tile = function ( boolString, cellPos ) {
 // Returns a Tile object that has properties containing
 // its html, its operand, and the side it's on
 
 	var thisTile = {};
 
-	thisTile.html         = null,
-	thisTile.boolString   = null,
-	thisTile.value        = null,
-	thisTile.bool         = null,
-	thisTile.nodeL        = {},
-	thisTile.nodeR        = {},
-	thisTile.nodeT        = {},
-	thisTile.nodeB        = {},
-	thisTile.cell         = {},
-	thisTile.previousCell = {},
-	thisTile.id           = null
+	thisTile._html         = null;
+	thisTile._boolString   = null;
+	thisTile._value        = null;
+	thisTile._bool         = null;
+	thisTile._id           = null;
+
+	thisTile._nodeL        = {};
+	thisTile._nodeR        = {};
+	thisTile._nodeT        = {};
+	thisTile._nodeB        = {};
+
+	thisTile._cell         = cellPos;
+	thisTile._previousCell = {};  // Is this value needed?
+
+	thisTile._wasMerged    = false;
 
 	// Updates position values. Should it also
 	// move the tile there if it needs moving?
 	// ( {col, row} ) -> Tile
-	thisTile.updatePosition = function ( cellColRow ) {
+	thisTile._updatePosition = function ( cellColRow ) {
 		var self = this;
 
-		self.cell.row = cellColRow.row;
-		self.cell.col = cellColRow.col;
+		self._cell.row = cellColRow.row;
+		self._cell.col = cellColRow.col;
 
 		var remPos = cellCoordsToRemNum( cellColRow );
 		var xStr = numToRem( remPos.x );
 		var yStr = numToRem( remPos.y );
 
-		self.html.style.left = xStr;
-		self.html.style.top  = yStr;
+		self._html.style.left = xStr;
+		self._html.style.top  = yStr;
 
 		return self;
 
 	};  // end Tile.updatePosition()
 
 	// Sets the object id and the html id
-	thisTile.setID = function ( idNum ) {
+	thisTile._setID = function ( idNum ) {
 		var self = this;
 
-		self.id = idNum;
-		self.html.id = "id_" + idNum;
+		self._id = idNum;
+		self._html.id = "id_" + idNum;
 
 		return self;
 	};  // end Tile.setID()
@@ -105,9 +80,9 @@ var Tile = function ( boolString ) {
 		var opTxtNode = document.createTextNode( randOp );
 		nodeHTML.appendChild( opTxtNode );
 
-		node.html = nodeHTML;
+		node.html         = nodeHTML;
 		node.operandAsStr = randOpPure;
-		node.side = side;
+		node.side         = side;
 
 		return node;
 
@@ -141,13 +116,21 @@ var Tile = function ( boolString ) {
 	tileHTML.appendChild( nodeT.html );
 	tileHTML.appendChild( nodeB.html );
 
-	thisTile.html = tileHTML;
-	thisTile.value = value;
-	thisTile.boolString = boolString;
-	thisTile.bool = bool;
+	thisTile._html       = tileHTML;
+	thisTile._value      = value;
+	thisTile._boolString = boolString;
+	thisTile._bool       = bool;
 
-	thisTile.nodeL = nodeL; thisTile.nodeR = nodeR;
-	thisTile.nodeT = nodeT; thisTile.nodeB = nodeB;
+	thisTile._nodeL = nodeL; thisTile._nodeR = nodeR;
+	thisTile._nodeT = nodeT; thisTile._nodeB = nodeB;
+
+	// Place Tile
+	var remPos = cellCoordsToRemNum( thisTile._cell );
+	var xStr = numToRem( remPos.x );
+	var yStr = numToRem( remPos.y );
+
+	thisTile._html.style.left = xStr;
+	thisTile._html.style.top  = yStr;
 
 	return thisTile;
 };  // end Tile()
@@ -195,13 +178,13 @@ TileManager.addTile = function ( container, cellColRow, booly ) {
 
 	// create a tile object
 	var tile = Tile( booly );
-	tile.setID( self.idCount );
-	self.idCount++
+	tile.setID( self._idCount );
+	self._idCount++
 
 	// Convert grid value to empty
 	// Give a starting cellColRow
 	tile.updatePosition( cellColRow );
-	self.tileList.push( tile );
+	self._tileList.push( tile );
 
 	// Add to the DOM (belongs here?)
 	container.appendChild( tile.html );
@@ -217,10 +200,10 @@ TileManager.addRandomTile = function ( grid ) {
 	var self = this;
 
 	// Pick a random empty location
-	var emptyCellColRow = chooseRandom( grid.emptyCellsColRow );
+	var emptyCellColRow = chooseRandom( grid.getEmptyCells() );
 	var booly = TileManager.randomBoolStr( TileManager.truthyStrings, TileManager.falsyStrings );
 
-	var tile = self.addTile( grid.container, emptyCellColRow, booly );
+	var tile = self._addTile( grid.container, emptyCellColRow, booly );
 
 	return tile;
 
@@ -231,8 +214,79 @@ TileManager.addTrueTile = function ( grid, cellColRow ) {
 	var self = this;
 
 	var booly = 'true';
-	var tile = self.addTile( grid.container, cellColRow, booly );
+	var tile = self._addTile( grid.container, cellColRow, booly );
 
 	return tile;
 
 };  // end TileManager.addTrueTile()
+
+
+TileManager.moveRight = function ( grid ) {
+
+	var cells = grid.cells;
+
+	// var 
+
+	// for ( var rowIndx = 0; rowIndx < cells.length; rowIndx++ ) {
+
+	// 	var row = cells[ rowIndx ];
+	// 	var tile = row[ (row.length - 1) ];
+
+	// 	if ( tile !== null ) {};
+
+	// 	if ( tile && !tile.merged ) {
+	// 		//??
+	// 	}
+
+	// }
+
+};  // end TileManager.moveRight()
+
+// ( Grid ) -> TileManager
+TileManager.endRound = function ( grid ) {
+	var self = this;
+
+	// ( Grid, {col, row} ) -> Grid
+	grid.forEachCell( function ( grid, cellPos ) {
+
+		// Reset move checks so they can be checked next time
+		var contents = grid.cells[ cellPos.col ][ cellPos.row ];
+		if ( contents !== null ) { contents.wasMerged = false; }
+
+	});
+
+	// Should I return grid instead?
+	return self;
+
+};  // end TileManager.endRound();
+
+// Get the vector representing the chosen direction
+TileManager.getVector = function (direction) {
+	// Vectors representing tile movement
+	var map = {
+		"right": { x:  1,  y:  0 },  // Right
+		"left":  { x: -1,  y:  0 },  // Left
+		"up":    { x:  0,  y: -1 },  // Up
+		"down":  { x:  0,  y:  1 }   // Down
+	};
+
+	return map[ direction ];
+};  // end TileManager.getVector()
+
+// Build a list of positions to traverse in the right order
+// Determines order of movement/merge checking
+TileManager.buildTraversals = function (vector) {
+	var traversals = { x: [], y: [] };
+
+	for ( var pos = 0; pos < this.size; pos++ ) {
+		traversals.x.push(pos);
+		traversals.y.push(pos);
+	}
+
+	// Always traverse from the farthest cell in the chosen direction
+	if ( vector.x === 1 ) { traversals.x = traversals.x.reverse(); }
+	if ( vector.y === 1 ) { traversals.y = traversals.y.reverse(); }
+
+	return traversals;
+};  // end TileManager.buildTraversals()
+
