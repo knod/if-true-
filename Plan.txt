@@ -1,6 +1,20 @@
 Plan
 
-Most current: https://www.mindmup.com/#m:a189193e0086210132ab3842af6a248292
+RULES:
+	Parents:
+		An object should only call on its (direct?) children objects' properties
+			How about setting tile id or adding tile html to the dom? Tile is
+			a child of TileManager, not of GameManager
+		An object should only use what is returned to it.
+		Keep the container as close to the top as is feasible?
+		xqwzts: It's also about limiting how many different classes interface with the same data
+	Self:
+		Always set 'this' to self. Try not to use a 'this' that can't be
+			logically set to self.
+		Always change self values at the end of a function
+
+Most current, but can't have multiple connections:
+https://www.mindmup.com/#m:a106eb036086dd0132453c168158e1c87b
 
 Less current:
 			Main
@@ -10,18 +24,18 @@ Less current:
 			  |   /
 			  v  /
 		Game Manager
-			/ | \
-		   /  |  \
-Page Manager  |	 Grid
-	|		  |	   |
-	v		  |	   v
-   DOM		  |	  DOM (just once at the start)
+			/ |
+		   /  |
+Page Manager  |
+	|		  |
+	v		  |
+   DOM		  |
    			  |
    			  v
    		Tile Manager
-   			  |
-   			  v
-   			Tile
-   			  |
+   			/ | \
+   		   /  |  \
+   		  /   |	  \
+   		Tile  |	   Grid
    			  v
    			 DOM
