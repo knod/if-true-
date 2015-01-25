@@ -68,7 +68,7 @@ var Tile = function ( boolString, cellPos ) {
 	// its html, its operand, and the side it's on
 	var createNode = function ( side ) {
 
-		var opperands = [ '&&', '&&', '| |' ];
+		var opperands = [ '&&', '| |', '| |' ];
 		var randOp = chooseRandom( opperands );
 		// Need string without spaces for operations later
 		var randOpPure = randOp.replace( ' ', '' );
@@ -105,15 +105,11 @@ var Tile = function ( boolString, cellPos ) {
 
 	boolHTML.className = 'bool' + ' ' + booly;
 
-	var nodeL = createNode( 'left' );
 	var nodeR = createNode( 'right' );
-	var nodeT = createNode( 'top' );
 	var nodeB = createNode( 'bottom' );
 
 	tileHTML.appendChild( boolHTML );
-	tileHTML.appendChild( nodeL.html );
 	tileHTML.appendChild( nodeR.html );
-	tileHTML.appendChild( nodeT.html );
 	tileHTML.appendChild( nodeB.html );
 
 	thisTile._html       = tileHTML;
@@ -121,8 +117,7 @@ var Tile = function ( boolString, cellPos ) {
 	thisTile._boolString = boolString;
 	thisTile._bool       = bool;
 
-	thisTile._nodeL = nodeL; thisTile._nodeR = nodeR;
-	thisTile._nodeT = nodeT; thisTile._nodeB = nodeB;
+	thisTile._nodeR = nodeR; thisTile._nodeB = nodeB;
 
 	// Place Tile
 	var remPos = cellCoordsToRemNum( thisTile._cell );
