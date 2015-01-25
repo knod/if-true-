@@ -13,24 +13,24 @@ the way to Tile and Grid?
 // Need to pass Tile into here too?
 var GameManager = function ( Grid, TileMan, PageMan, container ) {
 
-	thisMan = {};
+	thisGMan = {};
 
-	thisMan._numCols 	=       4;
+	thisGMan._numCols 	=       4;
 
-	thisMan._newTileID 	=       0;
-	thisMan._newGridID 	=       0;
+	thisGMan._newTileID 	=       0;
+	thisGMan._newGridID 	=       0;
 
-	thisMan._score		=       0;
+	thisGMan._score		=       0;
 
-	thisMan._Grid 		=    Grid;
-	thisMan._grid 		=    null;
-	thisMan._TileMan 	= TileMan;
-	thisMan._PageMan 	= PageMan;
+	thisGMan._Grid 		=    Grid;
+	thisGMan._grid 		=    null;
+	thisGMan._TileMan 	= TileMan;
+	thisGMan._PageMan 	= PageMan;
 
-	thisMan._container 	= container;
+	thisGMan._container 	= container;
 
 	// ( Str ) -> int
-	thisMan._move = function ( direction ) {
+	thisGMan._move = function ( direction ) {
 		var self = this;
 
 		var points = 0;
@@ -87,10 +87,10 @@ var GameManager = function ( Grid, TileMan, PageMan, container ) {
 
 		return points;
 
-	}; // end thisMan._move
+	}; // end thisGMan._move
 
 	// ( int ) -> GameManager
-	thisMan._lose = function ( points ) {
+	thisGMan._lose = function ( points ) {
 		var self = this;
 
 		console.log("Game Over");
@@ -99,7 +99,7 @@ var GameManager = function ( Grid, TileMan, PageMan, container ) {
 	};  // end GameManager._lose()
 
 	// ( int ) -> Grid
-	thisMan._addGrid = function ( idNum ) {
+	thisGMan._addGrid = function ( idNum ) {
 		var self = this;
 
 		// Create grid with id
@@ -119,12 +119,12 @@ var GameManager = function ( Grid, TileMan, PageMan, container ) {
 	};  // end GameManager._addGrid()
 
 	// Should I have a function for increasing id numbers?
-	thisMan._increaseGridID = function ( idNum ) {
+	thisGMan._increaseGridID = function ( idNum ) {
 		var self = this;
 		self._newGridID = idNum++;
 		return self;
 	};  // end GameManager._increaseGridID()
-	thisMan._increaseTileID = function ( idNum ) {
+	thisGMan._increaseTileID = function ( idNum ) {
 		var self = this;
 		self._newTileID = idNum++;
 		return self;
@@ -133,6 +133,6 @@ var GameManager = function ( Grid, TileMan, PageMan, container ) {
 	
 
 
-	return thisMan;
+	return thisGMan;
 
 };  // end GameManager()
