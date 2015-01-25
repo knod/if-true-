@@ -28,7 +28,7 @@ var GameManager = function ( Grid, TileMan, PageMan ) {
 		// Move the first tile till it hits a wall
 
 		// If there's a second tile
-			// Call TileManager's merge function (needs direction):
+			// Call TileManager's merge function (needs direction and tiles):
 				// Use grid position and direction to determine which node R or 
 				// node B to use (Always use leftmost or topmost Tile's node)
 				// Check if Tiles add up to true

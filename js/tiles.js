@@ -209,6 +209,7 @@ TileManager._addTrueTile = function ( grid, cellColRow ) {
 	var self = this;
 
 	var booly = 'true';
+	tile.html.className += 'too-true';
 	var tile = self._addTile( booly, cellColRow, grid.container  );
 
 	return tile;

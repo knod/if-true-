@@ -59,9 +59,9 @@ table { line-height: 0px; }
 	border: 0.2rem solid rgb(128, 70, 0);
 }
 
-.truthy {
-	/*background-color: palegreen;*/
-	/*border-color: lightgreen;*/
+.too-true {
+	background-color: palegreen;
+	border-color: lightgreen;
 }
 
 .falsy {
