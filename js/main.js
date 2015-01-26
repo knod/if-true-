@@ -47,6 +47,7 @@ var addRandomTile = function ( grid ) {
 	var emptyCellPos = chooseRandom( grid.getEmptyCells() );
 	var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
 	var tile = Tile( booly, emptyCellPos );
+	grid.addTile( tile );
 
 	tile._setID( tileIDCount );
 	tileIDCount++

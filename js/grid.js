@@ -146,7 +146,8 @@ var Grid = function () {
 	// Should this return cells or tile?
 	thisGrid.addTile = function ( tile ) {
 		var self = this;
-		self.cells.push( [tile._cell.col][tile._cell.row] );
+		self.cells[tile._cell.col][tile._cell.row] = tile;
+		console.log(self.cells);
 		return self;
 	};  // end Grid.addTile()
 
