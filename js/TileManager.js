@@ -4,7 +4,7 @@ Uses Grid and Tiles
 Is called by GameManager
 */
 
-var TileManager = function ( container, newTManID ) {
+var TileManager2 = function ( container, newTManID ) {
 
 	var thisTMan = {};
 
@@ -36,7 +36,8 @@ var TileManager = function ( container, newTManID ) {
 		return null;
 	};  // end thisTMan._createGrid()
 
-	thisTMan._addGrid? = function () {
+	// Needed here?
+	thisTMan._addGrid = function () {
 		var self = this;
 
 		return null;
@@ -54,19 +55,22 @@ var TileManager = function ( container, newTManID ) {
 		return null;
 	};  // end thisTMan._createTile()
 
-	thisTMan._createTrueTile? = function () {
+	// Needed here?
+	thisTMan._createTrueTile = function () {
 		var self = this;
 
 		return null;
 	};  // end thisTMan._createTrueTile()
 
-	thisTMan._addTile?	 = function () {
+	// Needed here?
+	thisTMan._addTile	 = function () {
 		var self = this;
 
 		return null;
 	};  // end thisTMan._addTile()
 
-	thisTMan._addObjToDOM? = function () {
+	// Needed here?
+	thisTMan._addObjToDOM = function () {
 		var self = this;
 
 		return null;
@@ -126,4 +130,4 @@ var TileManager = function ( container, newTManID ) {
 
 	return thisTMan;
 
-}}; // end TileManager()
+}; // end TileManager()
