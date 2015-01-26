@@ -65,23 +65,26 @@ var addRandomTile = function ( grid ) {
 // ==============
 
 // Test of initiating grid
-var tileIDCount = 0;
-var gridIDCount = 0;
+var tManID = 0;
 
-var createGrid = function () {
+var tMan = TileManager2( tManID );
+tMan._initGrid();
 
-	var grid = Grid();
-	grid._initGrid( gridIDCount );
-	gridIDCount ++;
 
-	return grid;
-};
+// var createGrid = function () {
 
-var x = createGrid();
+// 	var grid = Grid();
+// 	grid._initGrid( gridIDCount );
+// 	gridIDCount ++;
 
-// Add three tiles to start us off
-var numStartTiles = 3;
-for ( var tileNum = 1; tileNum < (numStartTiles + 1); tileNum++ ) {
-	addRandomTile( x );
-}
+// 	return grid;
+// };
+
+// var x = createGrid();
+
+// // Add three tiles to start us off
+// var numStartTiles = 3;
+// for ( var tileNum = 1; tileNum < (numStartTiles + 1); tileNum++ ) {
+// 	addRandomTile( x );
+// }
 

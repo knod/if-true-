@@ -6,13 +6,17 @@ http://gabrielecirulli.github.io/2048/
 
 'use strict'
 
-var Grid = function () {
+var Grid = function ( idNum, size ) {
 
 	var thisGrid = {};
 
-	thisGrid._container        = null;
-	thisGrid._id               = null;
-	thisGrid._numCells         = 4;
+	// ==============
+	// SETUP
+	// ==============
+	// If we need to optimize, create an init function
+	// thisGrid._container        = container;
+	thisGrid._gridID           = idNum;
+	thisGrid._size         	   = size;
 	thisGrid._html             = null;
 	// List of nulls and Tile objects
 	thisGrid._cells            = [];
@@ -28,28 +32,35 @@ var Grid = function () {
 	// ];  // end Grid.positions[];
 
 	// (int) -> []
-	thisGrid._buildEmptyGridData = function () {
+	thisGrid._buildEmptyGrid = function ( size ) {
 		var self = this;
 		var cells = [];
 
-		for (var colNum = 0; colNum < self._numCells; colNum++) {
+		for (var colNum = 0; colNum < size; colNum++) {
 
 			cells[ colNum ] = [];
 			var column = cells[ colNum ];
-			for (var rownNum = 0; rownNum < self._numCells; rownNum++) {
+
+			for (var rownNum = 0; rownNum < size; rownNum++) {
 				column.push(null);
 			}
 		}
-
+		// Should this be changed here or from outside?
+		self._cells = cells;
 		return cells;
 	};  // end Grid.buildEmptyGrid()
 
 	// (int) -> str
-	thisGrid._buildHTML = function ( container, idNum ) {
+	thisGrid._buildHTML = function ( idNum ) {
 		var self = this;
 
-		for (var colNum = 0; colNum < self._numCells; colNum++) {
-			for (var rownNum = 0; rownNum < self._numCells; rownNum++) {
+		var container = document.createElement( 'div' );
+		container.className = 'grid';
+
+		container.id = "grid-" + idNum;
+		// Could do this in Grid._forEachCell()?
+		for (var colNum = 0; colNum < self._size; colNum++) {
+			for (var rownNum = 0; rownNum < self._size; rownNum++) {
 				
 				var borderCell = document.createElement( 'div' );
 				borderCell.className = 'grid-cell';
@@ -57,10 +68,19 @@ var Grid = function () {
 
 			}
 		}
-
+		// Should this be changed here or from outside?
+		self._html = container;
 		return container
 	};  // end Grid.buildHTML()
 
+	// Should these be in here? Should they be called from outside?
+	thisGrid._buildEmptyGrid( size );
+	thisGrid._buildHTML( idNum );
+
+
+	// ==============
+	// NON-SETUP
+	// ==============
 	// TODO: NEEDS UPDATING TO NEW FUNCTIONALITY {col, row}
 	// {} -> bool
 	thisGrid._isCellOccupied = function ( position ) {
@@ -107,7 +127,7 @@ var Grid = function () {
 		// ( Grid, {col, row} ) -> Grid
 		self._forEachCell( function ( grid, cellPos ) {
 
-			var contents = grid.cells[ cellPos.col ][ cellPos.row ];
+			var contents = self._cells[ cellPos.col ][ cellPos.row ];
 			if ( contents !== null ) { tiles.push( contents ); }
 
 		});
@@ -128,9 +148,9 @@ var Grid = function () {
 	thisGrid._forEachCell = function ( funct ) {
 		var self = this;
 
-		for ( var colNum = 0; colNum < self._numCells; colNum++ ) {
-			for ( var rowNum = 0; rowNum < self._numCells; rowNum++ ) {
-
+		for ( var colNum = 0; colNum < self._size; colNum++ ) {
+			for ( var rowNum = 0; rowNum < self._size; rowNum++ ) {
+				// Include self so others can call it? Is that super bad?
 				funct( self, {col: colNum, row: rowNum} );
 
 			}
@@ -159,24 +179,18 @@ var Grid = function () {
 		return self;
 	};  // end removeTile
 
-	// Don't worry about the tiles, just do stuff for yourself
-	thisGrid._initGrid = function ( idNum ) {
-		var self = this;
+	// Remove grid function? Maybe for multiplayer? Maybe later...
 
-		self._container = document.createElement( 'div' );
-		self._container.className = 'grid-container';
+	// // Don't worry about the tiles, just do stuff for yourself
+	// thisGrid._initGrid = function ( container, idNum ) {
+	// 	var self = this;
 
-		var container = self._container;
+	// 	//self._id = idNum;
+	// 	self._cells = self._buildEmptyGrid();
+	// 	self._html = self._buildHTML( container, idNum );
 
-		//self._id = idNum;
-		self._cells = self._buildEmptyGridData();
-		self._idNum = idNum;
-		self._html = self._buildHTML( container, idNum );
-
-		document.body.appendChild( self._container );
-
-		return self;
-	};
+	// 	return self;
+	// };
 
 	return thisGrid;
 };  // end Grid()

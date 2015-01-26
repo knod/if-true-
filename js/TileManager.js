@@ -4,20 +4,26 @@ Uses Grid and Tiles
 Is called by GameManager
 */
 
-var TileManager2 = function ( container, newTManID ) {
+var TileManager2 = function ( newTManID ) {
 
 	var thisTMan = {};
 
 	// ===============
 	// NOT FUNCTIONS
 	// ===============
-	thisTMan._container = container;
+	// thisTMan._container 	= null;
+	thisTMan._grid 			= null;
 
-	thisTMan.id 		= newTManID;
-	thisTMan._newGridID = 0;
-	thisTMan._newTileID = 0;
+	thisTMan._TManID 		= newTManID;
+	thisTMan._newGridID 	= 0;
+	thisTMan._newTileID 	= 0;
+	// Should there be an html property too?
+	thisTMan._html			= null;
 
-	thisTMan._falsyStrings = [
+	// Add number of rows? Need to be passed in?
+	thisTMan._size			= 4;
+	thisTMan._numStartTiles = 3;
+	thisTMan._falsyStrings 	= [
 		'false' , 'null', 'undefined', '0'
 		,'""'   , "NaN"
 	];  // end thisTMan._falsyStrings()
@@ -30,18 +36,68 @@ var TileManager2 = function ( container, newTManID ) {
 	// ===============
 	// FUNCTIONS
 	// ===============
-	thisTMan._createGrid = function ( idNum ) {
+
+	thisTMan._initGrid = function () {
 		var self = this;
 
-		return null;
+		self._grid = self._createGrid();
+		self._addFirstTiles( self._numStartTiles );
+		// better name?
+		self._addGame();
+
+		return self._grid;
+	};  // end TileManager._initGrid()
+
+	thisTMan._createGrid = function () {
+		var self = this;
+
+		self._html = document.createElement( 'div' );
+		var container = self._html;
+		container.className = 'grid-container';
+
+		var grid = Grid( self._newGridID, self._size );
+		// grid._initGrid( self._newGridID );
+
+		// Belongs elsewhere?
+		container.appendChild( grid._html );
+		// document.body.appendChild( container );
+
+		// // Add start tiles
+		// for ( var tileNum = 1; tileNum < (self._numStartTiles + 1); tileNum++ ) {
+		// 	var tile = self._createRandomTile();
+
+		// 	// Add tile to the DOM
+		// 	self._container.appendChild( tile._html );
+		// }
+
+		// container already updated self._html
+		self._newGridID += 1;
+
+		return grid;
 	};  // end thisTMan._createGrid()
 
-	// Needed here?
-	thisTMan._addGrid = function () {
+	thisTMan._addFirstTiles = function ( numTiles ) {
 		var self = this;
 
-		return null;
-	};  // end thisTMan._addGrid()
+		// Add start tiles
+		for ( var tileNum = 1; tileNum < (numTiles + 1); tileNum++ ) {
+			
+			var tile = self._createRandomTile();
+			// Add tile to the DOM
+			self._html.appendChild( tile._html );
+		
+		}
+
+		return self;
+	};  // end TileManager._addFirstTiles()
+
+	// Needed? Redundant?
+	// better name?
+	thisTMan._addGame = function () {
+		var self = this;
+		document.body.appendChild( self._html );
+		return self;
+	};  // end thisTMan._addGame()
 
 	thisTMan._randomBooly = function () {
 		var self = this;
@@ -76,11 +132,19 @@ var TileManager2 = function ( container, newTManID ) {
 		return null;
 	};  // end thisTMan._addObjToDOM()
 
-	thisTMan._addRandomTile = function () {
+	thisTMan._createRandomTile = function () {
 		var self = this;
 
-		return null;
-	};  // end thisTMan._addRandomTile()
+		var emptyCellPos = chooseRandom( self._grid._getEmptyCells() );
+		var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
+		var tile = Tile( booly, emptyCellPos );
+		self._grid._addTile( tile );
+
+		tile._setID( self._newTileID );
+		self._newTileID++
+
+		return tile;
+	};  // end thisTMan._createRandomTile()
 		// to DOM
 		// to Grid
 
