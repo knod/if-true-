@@ -44,16 +44,16 @@ var numToRem = function ( num ) { return num.toString() + "rem"; };
 
 var addRandomTile = function ( grid ) {
 
-	var emptyCellPos = chooseRandom( grid.getEmptyCells() );
+	var emptyCellPos = chooseRandom( grid._getEmptyCells() );
 	var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
 	var tile = Tile( booly, emptyCellPos );
-	grid.addTile( tile );
+	grid._addTile( tile );
 
 	tile._setID( tileIDCount );
 	tileIDCount++
 
 	// Add tile to the DOM
-	grid.container.appendChild( tile._html );
+	grid._container.appendChild( tile._html );
 
 };  // end .addRandomTile()
 
@@ -71,7 +71,7 @@ var gridIDCount = 0;
 var createGrid = function () {
 
 	var grid = Grid();
-	grid.initGrid( gridIDCount );
+	grid._initGrid( gridIDCount );
 	gridIDCount ++;
 
 	return grid;

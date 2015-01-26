@@ -22,7 +22,7 @@ var TileManager2 = function ( container, newTManID ) {
 		,'""'   , "NaN"
 	];  // end thisTMan._falsyStrings()
 	thisTMan._truthyStrings = [
-		'true'	   , '1'	  , '2'		, '16'
+		'true'	   , '1'	  , '2'		, '"16"'
 		, '[]'	   , '{}'	  , '"0"'   , '"null"'
 		, '"false"', '"NaN"'  , '"undefined"'
 	];  // end thisTMan._truthyStrings()
