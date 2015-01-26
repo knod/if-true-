@@ -54,6 +54,8 @@ var Grid = function ( idNum, size ) {
 	thisGrid._buildHTML = function ( idNum ) {
 		var self = this;
 
+		// A bit redundant, but makes code more logical and
+		// makes it easier to inspect elements in the browser
 		var container = document.createElement( 'div' );
 		container.className = 'grid';
 

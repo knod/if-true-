@@ -30,6 +30,11 @@ table { line-height: 0px; }
 	border-radius: 0.4rem;
 }
 
+/* Generate the z-index on the server too */
+.grid {
+	z-index: -20;
+}
+
 .grid-cell {
 	display: inline-block;
 	width: 4rem;
@@ -69,23 +74,6 @@ table { line-height: 0px; }
 	/*border-color: brown;*/
 }
 
-/* Tile id's temporary for testing */
-/* Actually, these could give positions? */
-#tile_1 {
-	left: 0rem; top: 0rem;
-}
-
-#tile_2 {
-	left: 4rem; top: 0rem;
-}
-
-#tile_3 {
-	left: 8rem; top: 0rem;
-}
-
-#tile_4 {
-	left: 12rem; top: 0rem;
-}
 
 .node {
 	position: absolute;
@@ -112,3 +100,106 @@ table { line-height: 0px; }
 .node-bottom {
 	left: 1.5rem; top: 3.5rem;
 }
+
+
+/* CELL/TILE POSITIONS */
+/* In the future, have the server generate the styles
+based on how big the grid is. (Way far in the future) */
+/* Generate teh z-index on the server too */
+/* z-index = -1 * (col + row) */
+/*
+Use base 4 math somehow...?
+cell# = base + col + (4 * row)
+c, r =
+0, 0 = 0 + (4 * 0) = 0
+1, 0 = 1 + (4 * 0) = 1
+2, 0 = 2 + (4 * 0) = 2
+3, 0 = 3 + (4 * 0) = 3
+0, 1 = 0 + (4 * 1) = 4
+1, 1 = 1 + (4 * 1) = 5
+2, 1 = 2 + (4 * 1) = 6
+3, 1 = 3 + (4 * 1) = 7
+0, 2 = 0 + (4 * 2) = 8
+*/
+#cell_0 {
+	left: 0rem; top: 0rem;
+	z-index: 0;
+}
+
+#cell_1 {
+	left: 4rem; top: 0rem;
+	z-index: -1;
+}
+
+#cell_2 {
+	left: 8rem; top: 0rem;
+	z-index: -2;
+}
+
+#cell_3 {
+	left: 12rem; top: 0rem;
+	z-index: -3;
+}
+
+#cell_4 {
+	left: 0rem; top: 4rem;
+	z-index: -4;
+}
+
+#cell_5 {
+	left: 4rem; top: 4rem;
+	z-index: -5;
+}
+
+#cell_6 {
+	left: 8rem; top: 4rem;
+	z-index: -6;
+}
+
+#cell_7 {
+	left: 12rem; top: 4rem;
+	z-index: -7;
+}
+
+
+#cell_8 {
+	left: 0rem; top: 8rem;
+	z-index: -8;
+}
+
+#cell_9 {
+	left: 4rem; top: 8rem;
+	z-index: -9;
+}
+
+#cell_10 {
+	left: 8rem; top: 8rem;
+	z-index: -10;
+}
+
+#cell_11 {
+	left: 12rem; top: 8rem;
+	z-index: -11;
+}
+
+#cell_12 {
+	left: 0rem; top: 12rem;
+	z-index: -12;
+}
+
+#cell_13 {
+	left: 4rem; top: 12rem;
+	z-index: -13;
+}
+
+#cell_14 {
+	left: 8rem; top: 12rem;
+	z-index: -14;
+}
+
+#cell_15 {
+	left: 12rem; top: 12rem;
+	z-index: -15;
+}
+
+
