@@ -41,12 +41,16 @@ var Tile = function ( boolString, cellPos ) {
 		self._cell.row = cellColRow.row;
 		self._cell.col = cellColRow.col;
 
-		var remPos = cellCoordsToRemNum( cellColRow );
-		var xStr = numToRem( remPos.x );
-		var yStr = numToRem( remPos.y );
+		var cellNum = (self._cell.col + ( self._cell.row * 4 ));
 
-		self._html.style.left = xStr;
-		self._html.style.top  = yStr;
+		self._html.id = "cell_" + cellNum;
+
+		// var remPos = cellCoordsToRemNum( cellColRow );
+		// var xStr = numToRem( remPos.x );
+		// var yStr = numToRem( remPos.y );
+
+		// self._html.style.left = xStr;
+		// self._html.style.top  = yStr;
 
 		return self;
 
@@ -57,7 +61,7 @@ var Tile = function ( boolString, cellPos ) {
 		var self = this;
 
 		self._id = idNum;
-		self._html.id = "id_" + idNum;
+		self._html.id = "cell_" + (self._cell.col + ( self._cell.row * 4 ));
 
 		return self;
 	};  // end Tile.setID()
@@ -124,8 +128,8 @@ var Tile = function ( boolString, cellPos ) {
 	var xStr = numToRem( remPos.x );
 	var yStr = numToRem( remPos.y );
 
-	thisTile._html.style.left = xStr;
-	thisTile._html.style.top  = yStr;
+	// thisTile._html.style.left = xStr;
+	// thisTile._html.style.top  = yStr;
 
 	return thisTile;
 };  // end Tile()
@@ -173,7 +177,7 @@ TileManager._addTile = function ( booly, cellPos, grid ) {
 
 	// create a tile object
 	var tile = Tile( booly, cellPos );
-	// tile.setID( self._idCount );
+	tile._setID(  );
 	// self._idCount++
 
 	// // Convert grid value to empty

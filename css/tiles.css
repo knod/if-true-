@@ -20,19 +20,29 @@ body, table { text-align: center; }
 
 table { line-height: 0px; }
 
+/* Putting border on grid-container means it
+visually overlaps tiles (as a parent). Putting
+a border on unaltered .grid shrinks everything down so the
+border can fit inside grid-container :/ */
 .grid-container {
-	/* for tile position absolute */
+	/* position needed for tile position absolute */
 	position: relative;
 	display: block;
-	margin: 0 auto; padding: 0;
+	margin: 2rem auto; padding: 0;
 	width: 16rem;
-	border: 0.7rem solid rgb(128, 70, 0);
-	border-radius: 0.4rem;
 }
 
 /* Generate the z-index on the server too */
 .grid {
-	z-index: -20;
+	/* position needed to make z-index work */
+	/* needed to make border and correct size work */
+	position: relative;
+	/* needed same size as border to make border work */
+	left: -0.7rem; top: -0.7rem;
+	z-index: -30;
+	width: 16rem;
+	border: 0.7rem solid rgb(128, 70, 0);
+	border-radius: 0.4rem;
 }
 
 .grid-cell {
@@ -50,6 +60,7 @@ table { line-height: 0px; }
 	height: 4rem;
 	left: 0rem;
 	top: 0rem;
+	transition: transform 1s, z-index 1s;
 }
 
 .bool {
@@ -121,63 +132,64 @@ c, r =
 3, 1 = 3 + (4 * 1) = 7
 0, 2 = 0 + (4 * 2) = 8
 */
-#cell_0 {
+.tile#cell_0 {
+	/*transform: translate(0rem, 0rem);*/
 	left: 0rem; top: 0rem;
 	z-index: 0;
 }
 
-#cell_1 {
+.tile#cell_1 {
 	left: 4rem; top: 0rem;
 	z-index: -1;
 }
 
-#cell_2 {
+.tile#cell_2 {
 	left: 8rem; top: 0rem;
 	z-index: -2;
 }
 
-#cell_3 {
+.tile#cell_3 {
 	left: 12rem; top: 0rem;
 	z-index: -3;
 }
 
-#cell_4 {
+.tile#cell_4 {
 	left: 0rem; top: 4rem;
 	z-index: -4;
 }
 
-#cell_5 {
+.tile#cell_5 {
 	left: 4rem; top: 4rem;
 	z-index: -5;
 }
 
-#cell_6 {
+.tile#cell_6 {
 	left: 8rem; top: 4rem;
 	z-index: -6;
 }
 
-#cell_7 {
+.tile#cell_7 {
 	left: 12rem; top: 4rem;
 	z-index: -7;
 }
 
 
-#cell_8 {
+.tile#cell_8 {
 	left: 0rem; top: 8rem;
 	z-index: -8;
 }
 
-#cell_9 {
+.tile#cell_9 {
 	left: 4rem; top: 8rem;
 	z-index: -9;
 }
 
-#cell_10 {
+.tile#cell_10 {
 	left: 8rem; top: 8rem;
 	z-index: -10;
 }
 
-#cell_11 {
+.tile#cell_11 {
 	left: 12rem; top: 8rem;
 	z-index: -11;
 }
@@ -201,5 +213,3 @@ c, r =
 	left: 12rem; top: 12rem;
 	z-index: -15;
 }
-
-
