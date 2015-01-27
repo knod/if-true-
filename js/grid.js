@@ -110,6 +110,7 @@ var Grid = function ( idNum, size ) {
 
 			var contents = self._cells[ col ][ row ];
 			if ( contents === null ) {
+				// Should these be named _col and _row?
 				emptyCellsPos.push( {col: col, row: row} );
 			}
 

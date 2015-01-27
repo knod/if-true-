@@ -137,10 +137,10 @@ var TileManager2 = function ( newTManID ) {
 
 		var emptyCellPos = chooseRandom( self._grid._getEmptyCells() );
 		var booly = TileManager._randomBoolStr( TileManager._truthyStrings, TileManager._falsyStrings );
-		var tile = Tile( booly, emptyCellPos );
+		var tile = Tile( booly, emptyCellPos, self._newTileID );
 		self._grid._addTile( tile );
 
-		tile._setID( self._newTileID );
+		// tile._updatePosition( emptyCellPos );
 		self._newTileID++
 
 		return tile;

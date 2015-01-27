@@ -10,25 +10,26 @@ http://gabrielecirulli.github.io/2048/
 // TILE OBJECT
 // ==============
 // Somehow need to integrate cellPos into creation of tile
-var Tile = function ( boolString, cellPos ) {
+var Tile = function ( boolString, cellPos, idNum ) {
 // Returns a Tile object that has properties containing
 // its html, its operand, and the side it's on
 
 	var thisTile = {};
 
+	thisTile._id           = idNum;
+	thisTile._boolString   = boolString;
 	thisTile._html         = null;
-	thisTile._boolString   = null;
+	thisTile._cellClass	   = 'cell-0';  // default
 	thisTile._value        = null;
 	thisTile._bool         = null;
-	thisTile._id           = null;
-
-	thisTile._nodeL        = {};
-	thisTile._nodeR        = {};
-	thisTile._nodeT        = {};
-	thisTile._nodeB        = {};
 
 	thisTile._cell         = cellPos;
 	thisTile._previousCell = {};  // Is this value needed?
+
+	// thisTile._nodeL        = {};
+	thisTile._nodeR        = {};
+	// thisTile._nodeT        = {};
+	thisTile._nodeB        = {};
 
 	thisTile._wasMerged    = false;
 
@@ -38,12 +39,18 @@ var Tile = function ( boolString, cellPos ) {
 	thisTile._updatePosition = function ( cellColRow ) {
 		var self = this;
 
-		self._cell.row = cellColRow.row;
-		self._cell.col = cellColRow.col;
+		var html = self._html;
+		var row = cellColRow.row;
+		var col = cellColRow.col;
 
-		var cellNum = (self._cell.col + ( self._cell.row * 4 ));
+		// Converts from row and col to number of
+		// cell (0 to 15)
+		var cellNum = (col + ( row * 4 ));
+		var cellClass = 'cell-' + cellNum;
 
-		self._html.id = "cell_" + cellNum;
+		// This changes self._html. Do this here?
+		html.classList.remove( self._cellClass );
+		html.classList.add( cellClass );
 
 		// var remPos = cellCoordsToRemNum( cellColRow );
 		// var xStr = numToRem( remPos.x );
@@ -52,25 +59,25 @@ var Tile = function ( boolString, cellPos ) {
 		// self._html.style.left = xStr;
 		// self._html.style.top  = yStr;
 
+		// Here? Needed at all?
+		self._cell.row  = cellColRow.row;
+		self._cell.col  = cellColRow.col;
+		self._cellClass = cellClass;
+
 		return self;
 
 	};  // end Tile.updatePosition()
 
-	// Sets the object id and the html id
-	thisTile._setID = function ( idNum ) {
-		var self = this;
+	// // Sets the object id and the html id
+	// thisTile._setID = function ( idNum ) {
+	// 	var self = this;
+	// 	self._id = idNum;
+	// 	return self;
+	// };  // end Tile.setID()
 
-		self._id = idNum;
-		self._html.id = "cell_" + (self._cell.col + ( self._cell.row * 4 ));
-
-		return self;
-	};  // end Tile.setID()
-
-
-	// PRIVATE FUNCTIONS
 	// Returns a 'node' object that has properties containing
 	// its html, its operand, and the side it's on
-	var createNode = function ( side ) {
+	thisTile._createNode = function ( side ) {
 
 		var opperands = [ '&&', '| |', '| |' ];
 		var randOp = chooseRandom( opperands );
@@ -80,7 +87,7 @@ var Tile = function ( boolString, cellPos ) {
 		var node = {};
 
 		var nodeHTML = document.createElement('div');
-		nodeHTML.className = 'node' + ' ' + 'node-' + side + ' op-' + randOpPure;
+		nodeHTML.className = 'node node-' + side + ' op-' + randOpPure;
 		var opTxtNode = document.createTextNode( randOp );
 		nodeHTML.appendChild( opTxtNode );
 
@@ -94,12 +101,44 @@ var Tile = function ( boolString, cellPos ) {
 
 
 	// BUILD THE TILE
-	var tileHTML = document.createElement('div');
-	tileHTML.className = 'tile';
+	thisTile._buildHTML = function ( boolString, booly, cellPos ) {
+		var self = this;
 
-	var boolHTML = document.createElement('div');
-	var boolTxtNode = document.createTextNode( boolString );
-	boolHTML.appendChild( boolTxtNode );
+		var tileHTML = document.createElement('div');
+		// INCLUDING THE DEFAULT CLASS IS IMPORTANT!!
+		tileHTML.className = 'tile ' + self._cellClass;
+
+		var boolHTML = document.createElement('div');
+		var boolTxtNode = document.createTextNode( boolString );
+		boolHTML.appendChild( boolTxtNode );
+
+		boolHTML.className = 'booly' + ' ' + booly;
+
+		// Here?
+		var nodeR = self._createNode( 'right' );
+		var nodeB = self._createNode( 'bottom' );
+
+		tileHTML.appendChild( boolHTML );
+		tileHTML.appendChild(  nodeR.html );
+		tileHTML.appendChild( nodeB.html );
+
+		tileHTML.id = "tile-" + self._id;
+
+		// Here?
+		self._nodeR = nodeR;
+		self._nodeB = nodeB;
+
+		// Hmmm, which one?
+		self._html = tileHTML;
+		return tileHTML;
+	};  // thisTile._buildHTML
+
+	// var tileHTML = document.createElement('div');
+	// tileHTML.className = 'tile';
+
+	// var boolHTML = document.createElement('div');
+	// var boolTxtNode = document.createTextNode( boolString );
+	// boolHTML.appendChild( boolTxtNode );
 
 	var value = eval( boolString );
 	var bool = determineBooly( boolString );
@@ -107,29 +146,35 @@ var Tile = function ( boolString, cellPos ) {
 	if ( bool === false ) { booly = 'falsy'; }
 	else { booly = 'truthy'; }
 
-	boolHTML.className = 'bool' + ' ' + booly;
+	// boolHTML.className = 'booly' + ' ' + booly;
 
-	var nodeR = createNode( 'right' );
-	var nodeB = createNode( 'bottom' );
+	// var nodeR = createNode( 'right' );
+	// var nodeB = createNode( 'bottom' );
 
-	tileHTML.appendChild( boolHTML );
-	tileHTML.appendChild( nodeR.html );
-	tileHTML.appendChild( nodeB.html );
+	// tileHTML.appendChild( boolHTML );
+	// tileHTML.appendChild( nodeR.html );
+	// tileHTML.appendChild( nodeB.html );
 
-	thisTile._html       = tileHTML;
+	// Set self._html here?
+	thisTile._buildHTML( boolString, booly, cellPos );
+
+	// thisTile._html       = tileHTML;
 	thisTile._value      = value;
-	thisTile._boolString = boolString;
+	// thisTile._boolString = boolString;
 	thisTile._bool       = bool;
 
-	thisTile._nodeR = nodeR; thisTile._nodeB = nodeB;
+	// thisTile._nodeR = nodeR; thisTile._nodeB = nodeB;
 
-	// Place Tile
-	var remPos = cellCoordsToRemNum( thisTile._cell );
-	var xStr = numToRem( remPos.x );
-	var yStr = numToRem( remPos.y );
+	// // Place Tile
+	// var remPos = cellCoordsToRemNum( thisTile._cell );
+	// var xStr = numToRem( remPos.x );
+	// var yStr = numToRem( remPos.y );
 
 	// thisTile._html.style.left = xStr;
 	// thisTile._html.style.top  = yStr;
+
+	// Sets another class name, which determines position
+	thisTile._updatePosition( cellPos );
 
 	return thisTile;
 };  // end Tile()
@@ -177,7 +222,7 @@ TileManager._addTile = function ( booly, cellPos, grid ) {
 
 	// create a tile object
 	var tile = Tile( booly, cellPos );
-	tile._setID(  );
+	tile._setID( idNum );
 	// self._idCount++
 
 	// // Convert grid value to empty
